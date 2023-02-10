@@ -5,7 +5,7 @@ export class SessionTokenDBAccess {
 
     private nedb: Nedb;
 
-    constructor(nedb = new Nedb('databases/sessionToken.db')) {
+    constructor(nedb : Nedb = new Nedb('databases/sessionToken.db')) {
         this.nedb = nedb;
         this.nedb.loadDatabase();
     }
@@ -32,6 +32,22 @@ export class SessionTokenDBAccess {
                         resolve(undefined)
                     } else {
                         resolve(docs[0]);
+                    }
+                }
+            })
+        });
+    }
+
+    public async deleteToken(tokenId: string): Promise<void> {
+        return new Promise((resolve, reject) => {
+            this.nedb.remove({ tokenId: tokenId }, {},(err: Error| null, numRemoved: number) => {
+                if (err) {
+                    reject(err)
+                } else {
+                    if (numRemoved == 0) {
+                        reject(new Error('SessionToken not deleted!'))
+                    } else {
+                        resolve();
                     }
                 }
             })

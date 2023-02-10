@@ -1,1 +1,1 @@
-# jest-ts-course
+# TSTestCourse
